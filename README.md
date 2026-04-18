@@ -310,9 +310,9 @@ Repeat for `post-service` (handler: `PostHandler`, table env: `POSTS_TABLE`) and
     </td>
     <td align="center">
       <a href="https://github.com/JAPV-X2612">
-        <img src="https://github.com/JAPV-X2612.png" width="100px;" alt="Jesús Alfonso Pinzón Vega"/>
+        <img src="https://github.com/JAPV-X2612.png" width="100px;" alt="Jesús Pinzón"/>
         <br />
-        <sub><b>Jesús Alfonso Pinzón Vega</b></sub>
+        <sub><b>Jesús Pinzón</b></sub>
       </a>
       <br />
       <sub>Full Stack Developer</sub>
