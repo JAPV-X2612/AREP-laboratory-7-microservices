@@ -1,7 +1,6 @@
 package edu.eci.arep.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
 
@@ -21,8 +20,7 @@ public class AppUser {
     @Column(name = "auth0_id", nullable = false, unique = true)
     private String auth0Id;
 
-    @NotBlank
-    @Column(nullable = false)
+    @Column
     private String email;
 
     @Column
