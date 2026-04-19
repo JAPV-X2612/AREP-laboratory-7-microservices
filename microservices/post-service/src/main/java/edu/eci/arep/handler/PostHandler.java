@@ -78,7 +78,9 @@ public class PostHandler implements RequestHandler<APIGatewayProxyRequestEvent, 
             }
             return response(405, "{\"error\":\"Method not allowed\"}");
         } catch (Exception e) {
-            return response(500, "{\"error\":\"Internal server error\"}");
+            context.getLogger().log("ERROR in PostHandler: " + e.getClass().getName() + " - " + e.getMessage());
+            e.printStackTrace();
+            return response(500, "{\"error\":\"Internal server error: " + e.getMessage() + "\"}");
         }
     }
 
