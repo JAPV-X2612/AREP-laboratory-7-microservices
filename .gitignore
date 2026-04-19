@@ -198,3 +198,8 @@ apidocs/
 *.backup
 *.old
 *.orig
+
+# ===================================
+# Claude Code Local Settings
+# ===================================
+.claude/settings.local.json
