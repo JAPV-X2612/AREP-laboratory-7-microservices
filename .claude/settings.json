@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn clean*)",
+      "Bash(mvn compile*)",
+      "Bash(mvn package*)",
+      "Bash(mvn test*)",
+      "Bash(mvn spring-boot:run*)",
+      "Bash(mvn verify*)",
+      "Bash(npm install*)",
+      "Bash(npm run dev*)",
+      "Bash(npm run build*)",
+      "Bash(npm run preview*)",
+      "Bash(npm test*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git branch*)",
+      "Bash(git show*)",
+      "Bash(docker run*)",
+      "Bash(docker ps*)",
+      "Bash(docker stop*)",
+      "Bash(aws dynamodb*)",
+      "Bash(sam build*)",
+      "Bash(sam local*)",
+      "Bash(java -version*)",
+      "Bash(java -jar*)",
+      "Bash(node -v*)",
+      "Bash(mvn -version*)",
+      "Bash(ls*)",
+      "Bash(find * -name *)",
+      "Bash(xargs ls *)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(rm -rf*)",
+      "Bash(docker rm -f*)",
+      "Bash(aws s3 rb*)",
+      "Bash(aws lambda delete-function*)"
+    ]
+  }
+}
