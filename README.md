@@ -392,43 +392,145 @@ exports.onExecutePostLogin = async (event, api) => {
 
 ## ☁️ AWS Deployment
 
-### Frontend → Amazon S3
+### 🌐 Live Environment
+
+| Component | URL |
+|---|---|
+| **Frontend** (Amazon S3) | https://twitter-frontend-arep-dv.s3.us-east-1.amazonaws.com/index.html |
+| **API Gateway** (stage: `prod`) | https://r84uoiai71.execute-api.us-east-1.amazonaws.com/prod |
+
+> **Note:** HTTPS is served directly by the S3 REST endpoint — no *CloudFront* is required (and is unavailable in *AWS Academy* accounts).
+
+### AWS Resources
+
+#### Lambda Functions — region `us-east-1` · runtime *Java 17* · memory 512 MB
+
+| Function name | Handler | Environment variables |
+|---|---|---|
+| `twitter-post-service` | `edu.eci.arep.handler.PostHandler` | `POSTS_TABLE=Posts`, `AUTH0_ISSUER_URI`, `AUTH0_AUDIENCE` |
+| `twitter-stream-service` | `edu.eci.arep.handler.StreamHandler` | `POSTS_TABLE=Posts` |
+| `twitter-user-service` | `edu.eci.arep.handler.UserHandler` | `USERS_TABLE=Users`, `AUTH0_ISSUER_URI`, `AUTH0_AUDIENCE` |
+
+#### DynamoDB Tables — on-demand billing
+
+| Table | Partition key |
+|---|---|
+| `Posts` | `id` (String) |
+| `Users` | `auth0Id` (String) |
+
+#### Amazon S3
+
+| Bucket | Region | Access |
+|---|---|---|
+| `twitter-frontend-arep-dv` | `us-east-1` | Public read via bucket policy |
+
+### Step-by-step Deployment
+
+#### 1 — Build Lambda JARs
+
+```bash
+cd microservices/post-service    && mvn clean package -DskipTests
+cd ../stream-service              && mvn clean package -DskipTests
+cd ../user-service                && mvn clean package -DskipTests
+```
+
+#### 2 — Create DynamoDB tables
+
+```bash
+aws dynamodb create-table --table-name Posts \
+  --attribute-definitions AttributeName=id,AttributeType=S \
+  --key-schema AttributeName=id,KeyType=HASH \
+  --billing-mode PAY_PER_REQUEST
+
+aws dynamodb create-table --table-name Users \
+  --attribute-definitions AttributeName=auth0Id,AttributeType=S \
+  --key-schema AttributeName=auth0Id,KeyType=HASH \
+  --billing-mode PAY_PER_REQUEST
+```
+
+#### 3 — Create Lambda functions
+
+```bash
+ROLE=arn:aws:iam::<ACCOUNT_ID>:role/LabRole
+
+for SVC in post stream user; do
+  aws lambda create-function \
+    --function-name twitter-${SVC}-service \
+    --runtime java17 \
+    --handler edu.eci.arep.handler.${SVC^}Handler \
+    --role "$ROLE" \
+    --zip-file fileb://microservices/${SVC}-service/target/${SVC}-service-1.0-SNAPSHOT.jar \
+    --timeout 30 --memory-size 512
+done
+```
+
+#### 4 — Set environment variables per function
+
+```bash
+aws lambda update-function-configuration --function-name twitter-post-service \
+  --environment 'Variables={POSTS_TABLE=Posts,AUTH0_ISSUER_URI=https://YOUR-DOMAIN.auth0.com/,AUTH0_AUDIENCE=https://your-api-audience}'
+
+aws lambda update-function-configuration --function-name twitter-stream-service \
+  --environment 'Variables={POSTS_TABLE=Posts}'
+
+aws lambda update-function-configuration --function-name twitter-user-service \
+  --environment 'Variables={USERS_TABLE=Users,AUTH0_ISSUER_URI=https://YOUR-DOMAIN.auth0.com/,AUTH0_AUDIENCE=https://your-api-audience}'
+```
+
+#### 5 — Create API Gateway
+
+Create a REST API with three child resources under `/api` — `posts`, `stream`, and `me`. Each method uses `AWS_PROXY` integration pointing to its Lambda function. Enable CORS with an `OPTIONS` mock integration on each resource and deploy to stage `prod`.
+
+#### 6 — Build and deploy the frontend
 
 ```bash
 cd frontend
-npm run build
-aws s3 sync dist/ s3://your-bucket-name --delete
-aws s3 website s3://your-bucket-name --index-document index.html
+cat > .env <<EOF
+VITE_AUTH0_DOMAIN=your-domain.auth0.com
+VITE_AUTH0_CLIENT_ID=your-spa-client-id
+VITE_AUTH0_AUDIENCE=https://your-api-audience
+VITE_API_BASE_URL=https://your-api-id.execute-api.us-east-1.amazonaws.com/prod
+EOF
+
+npm install && npm run build
+
+# Create and configure the S3 bucket
+aws s3 mb s3://your-bucket-name
+aws s3api put-public-access-block --bucket your-bucket-name \
+  --public-access-block-configuration \
+  "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+aws s3api put-bucket-policy --bucket your-bucket-name \
+  --policy '{
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::your-bucket-name/*"
+    }]
+  }'
+
+# Upload the production build
+aws s3 sync dist/ s3://your-bucket-name/ --delete
 ```
 
-### Microservices → AWS Lambda
+### Verifying the deployment
+
+Use the following `curl` commands to confirm each endpoint is live:
 
 ```bash
-# Build fat JARs for each service
-cd microservices/post-service    && mvn package -DskipTests
-cd ../stream-service              && mvn package -DskipTests
-cd ../user-service                && mvn package -DskipTests
+API=https://r84uoiai71.execute-api.us-east-1.amazonaws.com/prod
 
-# Deploy Post Service
-aws lambda create-function --function-name post-service \
-  --runtime java17 \
-  --handler edu.eci.arep.handler.PostHandler::handleRequest \
-  --zip-file fileb://target/post-service-1.0-SNAPSHOT.jar \
-  --environment Variables="{AUTH0_ISSUER_URI=...,AUTH0_AUDIENCE=...,POSTS_TABLE=posts}"
+# Public endpoints — should return 200
+curl -s "$API/api/stream"          # → {"posts":[...]}
+curl -s "$API/api/posts"           # → [...]
 
-# Deploy Stream Service
-aws lambda create-function --function-name stream-service \
-  --runtime java17 \
-  --handler edu.eci.arep.handler.StreamHandler::handleRequest \
-  --zip-file fileb://target/stream-service-1.0-SNAPSHOT.jar \
-  --environment Variables="{POSTS_TABLE=posts}"
+# Protected endpoint — should return 401 without a token
+curl -s -w "%{http_code}\n" "$API/api/me"    # → 401
 
-# Deploy User Service
-aws lambda create-function --function-name user-service \
-  --runtime java17 \
-  --handler edu.eci.arep.handler.UserHandler::handleRequest \
-  --zip-file fileb://target/user-service-1.0-SNAPSHOT.jar \
-  --environment Variables="{AUTH0_ISSUER_URI=...,AUTH0_AUDIENCE=...,USERS_TABLE=users}"
+# CORS headers — should return Access-Control-Allow-Origin: *
+curl -s -X OPTIONS -D - "$API/api/stream" | grep -i access-control
 ```
 
 ---
