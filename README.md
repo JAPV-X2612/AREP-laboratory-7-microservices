@@ -47,7 +47,7 @@ This project implements a public microblogging feed across two architectural pha
 
 The first phase consolidates all application concerns — security, business logic, persistence — into a **single deployable Spring Boot unit**.
 
-<img src="assets/images/1-twitter-monolith-architecture-diagram.png" alt="Monolith Architecture Diagram" width="70%">
+<img src="assets/images/1-twitter-monolith-architecture-diagram.png" alt="Monolith Architecture Diagram">
 
 - **Security Filter Chain** validates every incoming JWT against Auth0's JWKS endpoint before the request reaches any controller
 - **REST Controllers** (`PostController`, `StreamController`, `UserController`) handle routing and response mapping
@@ -59,7 +59,7 @@ The first phase consolidates all application concerns — security, business log
 
 The monolith is refactored into **three independent, stateless Lambda functions** — each deployed separately, scaling independently, and owning its own data.
 
-<img src="assets/images/2-twitter-microservices–architecture-diagram.png" alt="Microservices Architecture Diagram" width="70%">
+<img src="assets/images/2-twitter-microservices–architecture-diagram.png" alt="Microservices Architecture Diagram">
 
 | Service | Handler | Endpoints | Storage |
 |---|---|---|---|
@@ -182,7 +182,7 @@ cd twitter-monolith
 mvn spring-boot:run
 ```
 
-<img src="assets/images/3-monolith-started.png" alt="Monolith Started" width="70%">
+<img src="assets/images/3-monolith-started.png" alt="Monolith Started" width="80%">
 
 The backend is ready when the terminal shows:
 ```
@@ -204,7 +204,7 @@ npm install       # first time only
 npm run dev
 ```
 
-<img src="assets/images/4-frontend-started.png" alt="Frontend Started" width="70%">
+<img src="assets/images/4-frontend-started.png" alt="Frontend Started">
 
 The frontend is available at `http://localhost:3000`.
 
@@ -228,53 +228,53 @@ cd microservices/user-service    && mvn test
 
 Navigate to `http://localhost:3000`. Unauthenticated users see the login screen:
 
-<img src="assets/images/5-login-screen.png" alt="Login Screen" width="70%">
+<img src="assets/images/5-login-screen.png" alt="Login Screen">
 
 Clicking **Log In** redirects to the **Auth0** login page:
 
-<img src="assets/images/6-auth0-login-page.png" alt="Auth0 Login Page" width="70%">
+<img src="assets/images/6-auth0-login-page.png" alt="Auth0 Login Page">
 
 After successful authentication, the user is redirected back to the application:
 
-<img src="assets/images/7-authenticated-empty-stream.png" alt="Authenticated — Empty Stream" width="70%">
+<img src="assets/images/7-authenticated-empty-stream.png" alt="Authenticated — Empty Stream">
 
 ### ✍️ Creating a Post
 
 Authenticated users can compose a post of up to **140 characters** and submit it:
 
-<img src="assets/images/8-create-post.png" alt="Create Post" width="70%">
+<img src="assets/images/8-create-post.png" alt="Create Post">
 
 The post appears immediately in the public stream:
 
-<img src="assets/images/9-post-in-stream.png" alt="Post in Stream" width="70%">
+<img src="assets/images/9-post-in-stream.png" alt="Post in Stream">
 
 As more posts are created, the stream displays them ordered from **newest to oldest**:
 
-<img src="assets/images/10-multiple-posts-stream.png" alt="Multiple Posts in Stream" width="70%">
+<img src="assets/images/10-multiple-posts-stream.png" alt="Multiple Posts in Stream">
 
 ### 📄 API Documentation — Swagger UI
 
 The monolith exposes full *OpenAPI 3* documentation at `http://localhost:8080/swagger-ui.html`:
 
-<img src="assets/images/11-swagger-ui.png" alt="Swagger UI" width="70%">
+<img src="assets/images/11-swagger-ui.png" alt="Swagger UI">
 
 Protected endpoints require a Bearer token — paste it via the **Authorize** button:
 
-<img src="assets/images/12-swagger-authorize.png" alt="Swagger Authorize" width="70%">
+<img src="assets/images/12-swagger-authorize.png" alt="Swagger Authorize">
 
 #### `GET /api/me` — Authenticated user profile
 
-<img src="assets/images/13-swagger-get-me.png" alt="Swagger GET /api/me" width="70%">
+<img src="assets/images/13-swagger-get-me.png" alt="Swagger GET /api/me">
 
 #### `POST /api/posts` — Create a post
 
-<img src="assets/images/14-swagger-post-create.png" alt="Swagger POST /api/posts" width="70%">
+<img src="assets/images/14-swagger-post-create.png" alt="Swagger POST /api/posts">
 
 ### 🚪 Logout
 
 Clicking **Log Out** ends the session and returns to the login screen:
 
-<img src="assets/images/15-logout-screen.png" alt="Logout Screen" width="70%">
+<img src="assets/images/15-logout-screen.png" alt="Logout Screen">
 
 ---
 
