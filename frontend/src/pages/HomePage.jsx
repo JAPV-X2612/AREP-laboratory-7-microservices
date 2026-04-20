@@ -4,25 +4,21 @@ import LogoutButton from '../components/auth/LogoutButton';
 import PostForm from '../components/post/PostForm';
 import StreamFeed from '../components/stream/StreamFeed';
 
-/**
- * Main page shown to authenticated users.
- * Displays the post composition form, the user's nickname, and the global stream.
- */
 function HomePage() {
   const { user } = useAuth0();
   const [newPost, setNewPost] = useState(null);
+  const nickname = user?.nickname || user?.name || user?.email?.split('@')[0] || 'user';
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: '1rem' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="app-shell">
+      <header className="topbar">
         <h1>Home</h1>
-        <div>
-          <span style={{ marginRight: '1rem' }}>@{user?.nickname}</span>
+        <div className="user-chip">
+          <span className="handle">@{nickname}</span>
           <LogoutButton />
         </div>
       </header>
       <PostForm onPostCreated={setNewPost} />
-      <hr />
       <StreamFeed newPost={newPost} />
     </div>
   );

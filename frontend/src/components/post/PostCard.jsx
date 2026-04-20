@@ -1,21 +1,30 @@
 import React from 'react';
 
-/**
- * Displays a single post with its author nickname, content, and creation time.
- *
- * @param {Object} post          the post object to display
- * @param {string} post.id       unique post identifier
- * @param {string} post.content  post body text
- * @param {string} post.authorNickname display name of the author
- * @param {string} post.createdAt ISO-8601 creation timestamp
- */
+function formatRelative(iso) {
+  const date = new Date(iso);
+  const diffSec = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (diffSec < 60) return `${diffSec}s`;
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h`;
+  if (diffSec < 604800) return `${Math.floor(diffSec / 86400)}d`;
+  return date.toLocaleDateString();
+}
+
 function PostCard({ post }) {
+  const author = post.authorNickname || 'user';
+  const initial = author.charAt(0).toUpperCase();
+
   return (
-    <div style={{ border: '1px solid #ccc', borderRadius: 8, padding: '0.75rem', marginBottom: '0.5rem' }}>
-      <strong>{post.authorNickname}</strong>
-      <p style={{ margin: '0.4rem 0' }}>{post.content}</p>
-      <small style={{ color: '#888' }}>{new Date(post.createdAt).toLocaleString()}</small>
-    </div>
+    <article className="post-card">
+      <div className="avatar">{initial}</div>
+      <div className="body">
+        <div className="meta">
+          <span className="author">{author}</span>
+          <span className="time">· {formatRelative(post.createdAt)}</span>
+        </div>
+        <p className="content">{post.content}</p>
+      </div>
+    </article>
   );
 }
 

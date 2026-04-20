@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { createPost } from '../../services/apiService';
 
-/**
- * Form component for composing and submitting a new post.
- *
- * @param {Function} onPostCreated callback invoked with the new post after successful creation
- */
 function PostForm({ onPostCreated }) {
   const { getAccessTokenSilently } = useAuth0();
   const [content, setContent] = useState('');
@@ -14,6 +9,7 @@ function PostForm({ onPostCreated }) {
   const [loading, setLoading] = useState(false);
 
   const remaining = 140 - content.length;
+  const counterClass = remaining <= 0 ? 'counter danger' : remaining < 20 ? 'counter warn' : 'counter';
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,29 +24,29 @@ function PostForm({ onPostCreated }) {
       setContent('');
       onPostCreated(post);
     } catch (err) {
-      setError('Failed to create post. Please try again.');
+      const msg = err?.response?.data?.error || err?.message || 'Failed to create post. Please try again.';
+      setError(msg);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="post-form" onSubmit={handleSubmit}>
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         maxLength={140}
         placeholder="What's happening?"
         rows={3}
-        style={{ width: '100%', resize: 'vertical' }}
       />
-      <div>
-        <span style={{ color: remaining < 20 ? 'red' : 'inherit' }}>{remaining}</span>
-        <button type="submit" disabled={loading || !content.trim()}>
+      <div className="actions">
+        <span className={counterClass}>{remaining}</span>
+        <button type="submit" className="primary" disabled={loading || !content.trim()}>
           {loading ? 'Posting...' : 'Post'}
         </button>
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <div className="error-banner">{error}</div>}
     </form>
   );
 }

@@ -2,12 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PostCard from '../post/PostCard';
 import { fetchStream } from '../../services/apiService';
 
-/**
- * Fetches and renders the global public post stream.
- * Prepends a newly created post when the newPost prop changes.
- *
- * @param {Object|null} newPost a newly created post to prepend to the feed
- */
 function StreamFeed({ newPost }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,9 +20,9 @@ function StreamFeed({ newPost }) {
     }
   }, [newPost]);
 
-  if (loading) return <p>Loading stream...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
-  if (posts.length === 0) return <p>No posts yet. Be the first!</p>;
+  if (loading) return <div className="feed-state">Loading stream...</div>;
+  if (error) return <div className="error-banner">{error}</div>;
+  if (posts.length === 0) return <div className="feed-state">No posts yet. Be the first!</div>;
 
   return (
     <div>
