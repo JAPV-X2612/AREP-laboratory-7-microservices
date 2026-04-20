@@ -1,0 +1,78 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Página-1" id="V_ZMw43g1t_jDqQ2ApAc">
+    <mxGraphModel dx="1008" dy="480" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="Twitter-like App — Microservices Architecture (AWS)" vertex="1">
+          <mxGeometry height="40" width="980" x="200" y="16" as="geometry" />
+        </mxCell>
+        <mxCell id="aws" parent="1" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud;strokeColor=#232F3E;fillColor=#ffffff;verticalLabelPosition=top;verticalAlign=bottom;align=center;html=1;fontSize=13;fontStyle=1;" value="AWS Cloud" vertex="1">
+          <mxGeometry height="660" width="1000" x="210" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;verticalLabelPosition=bottom;verticalAlign=top;" value="Amazon S3&lt;br/&gt;&lt;i&gt;Frontend (SPA)&lt;/i&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="290" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="apigw" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;verticalLabelPosition=bottom;verticalAlign=top;" value="API Gateway" vertex="1">
+          <mxGeometry height="78" width="78" x="510" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="lpost" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;verticalLabelPosition=bottom;verticalAlign=top;" value="Post Service&lt;br/&gt;&lt;i&gt;AWS Lambda&lt;/i&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="660" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="lstream" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;verticalLabelPosition=bottom;verticalAlign=top;" value="Stream Service&lt;br/&gt;&lt;i&gt;AWS Lambda&lt;/i&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="610" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="luser" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;verticalLabelPosition=bottom;verticalAlign=top;" value="User Service&lt;br/&gt;&lt;i&gt;AWS Lambda&lt;/i&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="590" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="dpost" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3B48CC;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;verticalLabelPosition=bottom;verticalAlign=top;" value="Posts Table&lt;br/&gt;&lt;i&gt;Amazon DynamoDB&lt;/i&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="970" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="duser" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3B48CC;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;verticalLabelPosition=bottom;verticalAlign=top;" value="Users Table&lt;br/&gt;&lt;i&gt;Amazon DynamoDB&lt;/i&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="970" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.user;verticalLabelPosition=bottom;verticalAlign=top;" value="User&lt;br/&gt;&lt;i&gt;Browser&lt;/i&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="40" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="auth0" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=10;" value="&lt;b&gt;Auth0&lt;/b&gt;&lt;br/&gt;&lt;i&gt;&lt;&lt;external system&gt;&gt;&lt;/i&gt;&lt;br/&gt;JWT Issuer · JWKS" vertex="1">
+          <mxGeometry height="70" width="148" x="20" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="browser" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;" target="s3" value="Loads SPA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="browser" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;" target="apigw" value="API calls + JWT">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="auth0" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;dashed=1;endArrow=open;endFill=0;" target="browser" value="Login / JWT">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="apigw" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;" target="lpost" value="POST /api/posts&lt;br/&gt;GET /api/posts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="apigw" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;" target="lstream" value="GET /api/stream">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="apigw" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;" target="luser" value="GET /api/me">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="lpost" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;" target="dpost" value="read / write">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="lstream" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;dashed=1;" target="dpost" value="read">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="luser" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;" target="duser" value="read / write">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="auth0" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=10;dashed=1;endArrow=open;endFill=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" target="lpost" value="JWKS / JWT validation">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="188" y="650" />
+              <mxPoint x="779" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
