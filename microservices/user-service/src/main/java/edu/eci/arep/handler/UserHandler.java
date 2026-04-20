@@ -76,6 +76,15 @@ public class UserHandler implements RequestHandler<APIGatewayProxyRequestEvent, 
             String auth0Id = jwt.getSubject();
             String email = jwt.getClaim("email").asString();
             String nickname = jwt.getClaim("nickname").asString();
+            if (nickname == null || nickname.isBlank()) {
+                nickname = jwt.getClaim("name").asString();
+            }
+            if (nickname == null || nickname.isBlank()) {
+                nickname = auth0Id != null && auth0Id.contains("|") ? auth0Id.split("\\|")[0] + "-user" : "anon";
+            }
+            if (email == null || email.isBlank()) {
+                email = "unknown@unknown";
+            }
 
             AppUser user = userService.resolveUser(auth0Id, email, nickname);
             return response(200, objectMapper.writeValueAsString(UserResponse.from(user)));

@@ -113,6 +113,12 @@ public class PostHandler implements RequestHandler<APIGatewayProxyRequestEvent, 
 
         String authorId = jwt.getSubject();
         String authorNickname = jwt.getClaim("nickname").asString();
+        if (authorNickname == null || authorNickname.isBlank()) {
+            authorNickname = jwt.getClaim("name").asString();
+        }
+        if (authorNickname == null || authorNickname.isBlank()) {
+            authorNickname = authorId != null && authorId.contains("|") ? authorId.split("\\|")[0] + "-user" : "anon";
+        }
         Post post = postService.createPost(req.getContent(), authorId, authorNickname);
         return response(201, objectMapper.writeValueAsString(PostResponse.from(post)));
     }
